@@ -38,6 +38,12 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
+    /* Image Picker Colors */
+    --focal-point: 45 93% 58%;
+    --mobile-container: 320 65% 52%;
+    --tablet-container: 217 32% 53%;
+    --picker-overlay: 0 0% 0% / 0.3;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;

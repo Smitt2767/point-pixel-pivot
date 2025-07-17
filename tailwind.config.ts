@@ -61,7 +61,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'focal-point': 'hsl(var(--focal-point))',
+				'mobile-container': 'hsl(var(--mobile-container))',
+				'tablet-container': 'hsl(var(--tablet-container))',
+				'picker-overlay': 'hsl(var(--picker-overlay))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
