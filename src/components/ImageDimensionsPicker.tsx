@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { DndContext, useDraggable, DragEndEvent } from '@dnd-kit/core';
+import { DndContext, useDraggable, DragEndEvent, DragMoveEvent } from '@dnd-kit/core';
 
 interface Position {
   x: number;
@@ -54,8 +54,15 @@ const ImageDimensionsPicker = ({
     x: containerDimensions.width / 2,
     y: containerDimensions.height / 2,
   });
+  const [currentDragDelta, setCurrentDragDelta] = useState<Position>({ x: 0, y: 0 });
 
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Calculate current focal point position (including drag)
+  const getCurrentFocalPoint = (): Position => ({
+    x: focalPoint.x + currentDragDelta.x,
+    y: focalPoint.y + currentDragDelta.y,
+  });
 
   // Calculate container positions based on focal point
   const getMobileContainerPosition = (focalX: number): number => {
@@ -82,8 +89,14 @@ const ImageDimensionsPicker = ({
     return tabletLeft;
   };
 
-  const mobileLeft = getMobileContainerPosition(focalPoint.x);
-  const tabletLeft = getTabletContainerPosition(focalPoint.x);
+  const currentFocalPoint = getCurrentFocalPoint();
+  const mobileLeft = getMobileContainerPosition(currentFocalPoint.x);
+  const tabletLeft = getTabletContainerPosition(currentFocalPoint.x);
+
+  const handleDragMove = (event: DragMoveEvent) => {
+    const { delta } = event;
+    setCurrentDragDelta(delta);
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { delta } = event;
@@ -111,6 +124,9 @@ const ImageDimensionsPicker = ({
       x: finalX,
       y: newY,
     });
+    
+    // Reset drag delta
+    setCurrentDragDelta({ x: 0, y: 0 });
   };
 
   return (
@@ -122,7 +138,7 @@ const ImageDimensionsPicker = ({
         </p>
       </div>
 
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext onDragEnd={handleDragEnd} onDragMove={handleDragMove}>
         <div
           ref={containerRef}
           className="relative mx-auto border-2 border-border rounded-lg overflow-hidden"
@@ -180,7 +196,7 @@ const ImageDimensionsPicker = ({
             Focal Point
           </h3>
           <p className="text-muted-foreground">
-            X: {Math.round(focalPoint.x)}, Y: {Math.round(focalPoint.y)}
+            X: {Math.round(currentFocalPoint.x)}, Y: {Math.round(currentFocalPoint.y)}
           </p>
         </div>
         
