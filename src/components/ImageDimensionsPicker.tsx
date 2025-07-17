@@ -20,10 +20,10 @@ const FocalPoint = ({ position }: FocalPointProps) => {
     id: 'focal-point',
   });
 
-  const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-  } : {
-    transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
+  const style = {
+    transform: transform 
+      ? `translate3d(${position.x + transform.x}px, ${position.y + transform.y}px, 0)`
+      : `translate3d(${position.x}px, ${position.y}px, 0)`,
   };
 
   return (
